@@ -17,7 +17,7 @@ export class BookController {
                 image = await cloudinary.saveToCloudinary(uploadedImage);
                 await fileOperations.deleteFile(uploadedImage.path);
             }
-            const book = await bookService.createBook({...req.body,image});
+            const book = await bookService.createBook({ ...req.body, image });
             res.status(201).json(book);
         } catch (error) {
             console.log(error);
@@ -42,7 +42,7 @@ export class BookController {
         try {
             const query = req.query.q as string;
             const page = parseInt(req.query.page as string) || 1; // Default to page 1
-            const limit = parseInt(req.query.limit as string) || 10; // Default to 10 books per page
+            const limit = parseInt(req.query.limit as string) || 4; // Default to 10 books per page
             const skip = (page - 1) * limit;
 
             let result;
@@ -86,7 +86,14 @@ export class BookController {
     static async updateBookById(req: Request, res: Response) {
         try {
             const { id } = req.params;
+            const uploadedImage = req.file;
             const updateData: Partial<BookDocument> = req.body;
+            if (uploadedImage) {
+                updateData.image = await cloudinary.saveToCloudinary(
+                    uploadedImage
+                );
+                await fileOperations.deleteFile(uploadedImage.path);
+            }
             const updatedBook = await bookService.updateBookById(
                 id,
                 updateData

@@ -30,13 +30,13 @@ export class BookService {
         return book;
     }
 
-    async getAllBooks(skip: number = 0, limit: number = 10): Promise<{ books: BookDocument[], totalBooks: number }> {
+    async getAllBooks(skip: number = 0, limit: number = 4): Promise<{ books: BookDocument[], totalBooks: number }> {
         const books = await BookModel.find().skip(skip).limit(limit);
         const totalBooks = await BookModel.countDocuments(); // Total number of books
         return { books, totalBooks };
     }
 
-    async searchBooks(query: string, skip: number = 0, limit: number = 10): Promise<{ books: BookDocument[], totalBooks: number }> {
+    async searchBooks(query: string, skip: number = 0, limit: number = 4): Promise<{ books: BookDocument[], totalBooks: number }> {
         const { hits } = await esClient.search({
             index: "books",
             from: skip,

@@ -13,7 +13,12 @@ router.post(
 );
 router.get("/book/:id", BookController.getBookById);
 router.get("/books", BookController.searchBooks);
-router.patch("/updateBook/:id", adminAuth, BookController.updateBookById);
+router.patch(
+    "/updateBook/:id",
+    adminAuth,
+    Multer.single("image"),
+    BookController.updateBookById
+);
 router.delete("/deleteBook/:id", adminAuth, BookController.deleteBookById);
 
 export default router;

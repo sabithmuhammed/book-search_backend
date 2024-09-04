@@ -6,7 +6,7 @@ export default class JwtCreate  {
     generateAccessToken(userId: string): string {
         const KEY = process.env.JWT_KEY;
         if (KEY) {
-            const exp = Math.floor(Date.now() / 1000) + 30;
+            const exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60);
             return jwt.sign({ userId, exp, iat: Date.now() / 1000 }, KEY);
         }
         throw new Error("JWT key is not defined");
